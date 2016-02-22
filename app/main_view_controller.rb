@@ -26,7 +26,7 @@ class MainViewController < UITableViewController
   def startButtonClicked(sender)
     self.navigationItem.rightBarButtonItem = self.stop_button
 
-    # Search for hearth rate monitors
+    # Search for heart rate monitors
     uuid = CBUUID.UUIDWithString "180D"
     manager.scanForPeripheralsWithServices [uuid], options:nil
   end
@@ -56,7 +56,8 @@ class MainViewController < UITableViewController
     end
 
     cell.textLabel.text = peripheral.name
-    cell.detailTextLabel.text = CFUUIDCreateString(nil, peripheral.UUID)
+    NSLog "didDiscoverPeripheral %@", peripheral.identifier
+    cell.detailTextLabel.text = "..." #CFUUIDCreateString(nil, peripheral.UUID)
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
 
     cell
@@ -107,7 +108,8 @@ class MainViewController < UITableViewController
 
       tableView.reloadData
     end
-
+    manager.stopScan
+    NSLog "about to connect..."
     manager.connectPeripheral peripheral, options:nil
   end
   
